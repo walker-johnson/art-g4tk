@@ -99,7 +99,7 @@ public:
 				    const G4Material*, G4double cut) override;
 
   // Print out of the class parameters
-  virtual void PrintInfo();
+  virtual void PrintInfo() override;
 
   // print description in html
   virtual void ProcessDescription(std::ostream&) const override;

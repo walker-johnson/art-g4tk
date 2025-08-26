@@ -24,49 +24,53 @@
 // ********************************************************************
 //
 //
+// $Id: G4RDAtomicShell.hh,v 1.2 ????
+// GEANT4 tag $Name: geant4-09-01-ref-00 $
 //
-// Hadronic Process: Very Low Energy Neutron X-Sections
-// original by H.P. Wellisch, TRIUMF, 14-Feb-97
-// Builds and has the Cross-section data for one material.
-
-// Class Description
-// Final state production model for a high precision (based on evaluated data
-// libraries) description of neutron capture below 20 MeV;
-// To be used in your physics list in case you need this physics.
-// In this case you want to register an object of this class with
-// the corresponding process.
-// Class Description - End
-
-// P. Arce, June-2014 Conversion neutron_hp to particle_hp
+// Authors: Elena Guardincerri (Elena.Guardincerri@ge.infn.it)
+//          Alfonso Mantero (Alfonso.Mantero@ge.infn.it)
 //
-#ifndef artg4tk_lists_ArParticleHPCapture_hh
-#define artg4tk_lists_ArParticleHPCapture_hh
+// History:
+// -----------
+//  
+//  16 Sept 2001 Modofied according to a design iteration in the 
+//              LowEnergy category
+//
+// -------------------------------------------------------------------
 
-#include "Geant4/G4HadronicInteraction.hh"
-#include "Geant4/G4ParticleHPChannel.hh"
+// Class description:
+// Low Energy Electromagnetic Physics, a data container
+// Further documentation available from http://www.ge.infn.it/geant4/lowE
+
+// -------------------------------------------------------------------
+
+
+#ifndef artg4tk_lists_G4RDAtomicShell_h 
+#define artg4tk_lists_G4RDAtomicShell_h 1
 #include "Geant4/globals.hh"
 
-class ArParticleHPCapture : public G4HadronicInteraction {
+class G4RDAtomicShell {
+
 public:
-  ArParticleHPCapture();
 
-  ~ArParticleHPCapture();
+  // The data and the methods of this class are relative to
+  // a given shell
+ 
+  G4RDAtomicShell(G4int,G4double);
+ 
+  ~G4RDAtomicShell();
 
-  G4HadFinalState* ApplyYourself(const G4HadProjectile& aTrack, G4Nucleus& aTargetNucleus) override;
+  // Returns the binding energy of the shell
+  G4double BindingEnergy() const; 
 
-  const std::pair<G4double, G4double> GetFatalEnergyCheckLevels() const override;
-
-  G4int GetVerboseLevel() const;
-  void SetVerboseLevel(G4int);
-  void BuildPhysicsTable(const G4ParticleDefinition&) override;
-  void ModelDescription(std::ostream& outFile) const override;
+  // Returns the id of the shell
+  G4int ShellId() const;
 
 private:
-  std::vector<G4ParticleHPChannel*>* theCapture;
-  G4String dirName;
-  G4int numEle;
+  
+  G4int identifier;
+  G4double bindingEnergy;
 
-  G4HadFinalState theResult;
 };
 
-#endif /* artg4tk_lists_ArParticleHPCapture_hh */
+#endif

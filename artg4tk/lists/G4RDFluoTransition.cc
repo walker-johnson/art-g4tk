@@ -24,49 +24,63 @@
 // ********************************************************************
 //
 //
+// $Id: G4RDFluoTransition.cc,v 1.2 ????
+// GEANT4 tag $Name: geant4-09-01-ref-00 $
 //
-// Hadronic Process: Very Low Energy Neutron X-Sections
-// original by H.P. Wellisch, TRIUMF, 14-Feb-97
-// Builds and has the Cross-section data for one material.
-
-// Class Description
-// Final state production model for a high precision (based on evaluated data
-// libraries) description of neutron capture below 20 MeV;
-// To be used in your physics list in case you need this physics.
-// In this case you want to register an object of this class with
-// the corresponding process.
-// Class Description - End
-
-// P. Arce, June-2014 Conversion neutron_hp to particle_hp
+// Author: Elena Guardincerri (Elena.Guardincerri@ge.infn.it)
 //
-#ifndef artg4tk_lists_ArParticleHPCapture_hh
-#define artg4tk_lists_ArParticleHPCapture_hh
+// History:
+// -----------
+// 16 Sept 2001  EG  Modified according to a design iteration in the 
+//                   LowEnergy category
+//
+// -------------------------------------------------------------------
 
-#include "Geant4/G4HadronicInteraction.hh"
-#include "Geant4/G4ParticleHPChannel.hh"
-#include "Geant4/globals.hh"
+#include "artg4tk/lists/G4RDFluoTransition.hh"
 
-class ArParticleHPCapture : public G4HadronicInteraction {
-public:
-  ArParticleHPCapture();
+G4RDFluoTransition::G4RDFluoTransition(G4int finalShell,
+				       const std::vector<G4int>& ids,
+				       const G4DataVector& energies,
+				       const G4DataVector& prob)
+  :finalShellId(finalShell),
+   originatingShellIds(ids),
+   transitionEnergies(energies),
+   transitionProbabilities(prob)
+{ }
 
-  ~ArParticleHPCapture();
+G4RDFluoTransition::~G4RDFluoTransition()
+{ }
 
-  G4HadFinalState* ApplyYourself(const G4HadProjectile& aTrack, G4Nucleus& aTargetNucleus) override;
+const std::vector<G4int>& G4RDFluoTransition::OriginatingShellIds() const
+{
+  return  originatingShellIds;
+}
 
-  const std::pair<G4double, G4double> GetFatalEnergyCheckLevels() const override;
+const G4DataVector& G4RDFluoTransition::TransitionEnergies() const
+{
+  return transitionEnergies;
+}
 
-  G4int GetVerboseLevel() const;
-  void SetVerboseLevel(G4int);
-  void BuildPhysicsTable(const G4ParticleDefinition&) override;
-  void ModelDescription(std::ostream& outFile) const override;
+const G4DataVector& G4RDFluoTransition::TransitionProbabilities() const
+{
+  return transitionProbabilities;
+}
 
-private:
-  std::vector<G4ParticleHPChannel*>* theCapture;
-  G4String dirName;
-  G4int numEle;
+G4int G4RDFluoTransition::FinalShellId() const
+{ 
+  return finalShellId;
+}
 
-  G4HadFinalState theResult;
-};
+G4int G4RDFluoTransition::OriginatingShellId(G4int index) const
+{
+  return originatingShellIds[index];
+}
+G4double G4RDFluoTransition::TransitionEnergy(G4int index) const
+{
+  return  transitionEnergies[index];
+}
+G4double G4RDFluoTransition::TransitionProbability(G4int index) const
+{
+  return  transitionProbabilities[index];
+}
 
-#endif /* artg4tk_lists_ArParticleHPCapture_hh */

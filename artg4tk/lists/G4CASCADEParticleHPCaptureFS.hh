@@ -25,48 +25,55 @@
 //
 //
 //
-// Hadronic Process: Very Low Energy Neutron X-Sections
-// original by H.P. Wellisch, TRIUMF, 14-Feb-97
-// Builds and has the Cross-section data for one material.
-
-// Class Description
-// Final state production model for a high precision (based on evaluated data
-// libraries) description of neutron capture below 20 MeV;
-// To be used in your physics list in case you need this physics.
-// In this case you want to register an object of this class with
-// the corresponding process.
-// Class Description - End
-
 // P. Arce, June-2014 Conversion neutron_hp to particle_hp
 //
-#ifndef artg4tk_lists_ArParticleHPCapture_hh
-#define artg4tk_lists_ArParticleHPCapture_hh
+#ifndef artg4tk_lists_G4CASCADEParticleHPCaptureFS_h
+#define artg4tk_lists_G4CASCADEParticleHPCaptureFS_h 1
 
-#include "Geant4/G4HadronicInteraction.hh"
-#include "Geant4/G4ParticleHPChannel.hh"
-#include "Geant4/globals.hh"
+#include "globals.hh"
+#include "G4HadProjectile.hh"
+#include "G4HadFinalState.hh"
+#include "G4ParticleHPFinalState.hh"
+#include "G4ReactionProductVector.hh"
+#include "G4ParticleHPNames.hh"
+#include "G4ParticleHPPhotonDist.hh"
+#include "G4ParticleHPEnAngCorrelation.hh"
 
-class ArParticleHPCapture : public G4HadronicInteraction {
-public:
-  ArParticleHPCapture();
+class G4CASCADEParticleHPCaptureFS : public G4ParticleHPFinalState
+{
+  public:
+  
+  G4CASCADEParticleHPCaptureFS()
+  {
+    hasXsec = false; 
+    hasExactMF6 = false;
+    targetMass = 0;
+  }
+  
+  ~G4CASCADEParticleHPCaptureFS()
+  {
+  }
+  
+  void Init (G4double A, G4double Z, G4int M, G4String & dirName, G4String & aFSType, G4ParticleDefinition* );
+  G4HadFinalState * ApplyYourself(const G4HadProjectile & theTrack);
+  G4ParticleHPFinalState * New() 
+  {
+   G4CASCADEParticleHPCaptureFS * theNew = new G4CASCADEParticleHPCaptureFS;
+   return theNew;
+  }
+  
+  private:
+  
+  G4double targetMass;
+  
+  G4ParticleHPPhotonDist theFinalStatePhotons;
 
-  ~ArParticleHPCapture();
-
-  G4HadFinalState* ApplyYourself(const G4HadProjectile& aTrack, G4Nucleus& aTargetNucleus) override;
-
-  const std::pair<G4double, G4double> GetFatalEnergyCheckLevels() const override;
-
-  G4int GetVerboseLevel() const;
-  void SetVerboseLevel(G4int);
-  void BuildPhysicsTable(const G4ParticleDefinition&) override;
-  void ModelDescription(std::ostream& outFile) const override;
-
-private:
-  std::vector<G4ParticleHPChannel*>* theCapture;
-  G4String dirName;
-  G4int numEle;
-
-  G4HadFinalState theResult;
+   G4ParticleHPEnAngCorrelation theMF6FinalState;
+   G4bool hasExactMF6;
+  
+  G4ParticleHPNames theNames;
+  
+//  G4double theCurrentA;
+//  G4double theCurrentZ;
 };
-
-#endif /* artg4tk_lists_ArParticleHPCapture_hh */
+#endif

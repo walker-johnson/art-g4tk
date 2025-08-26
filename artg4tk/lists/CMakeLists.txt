@@ -11,7 +11,19 @@ cet_make_library(SOURCE
   MyG4NeutronPHPBuilder.cc
   MyQGSP_BERT_ArHP.cc
   MyQGSP_BERT_HP_NeutronXSBias.cc
-  MyQGSP_BERT_LASER.cc
+  MyQGSP_BERT_LASER.ccG4CASCADE.cc
+  G4CASCADEParticleHPCapture.cc
+  G4CASCADEParticleHPCaptureFS.cc
+  G4CASCADEParticleHPManager.cc
+  G4CASCADEParticleHPMessenger.cc
+  G4RDAtomicDeexcitation.cc
+  G4RDAtomicShell.cc
+  G4RDAtomicTransitionManager.cc
+  G4RDAugerData.cc
+  G4RDAugerTransition.cc
+  G4RDFluoData.cc
+  G4RDFluoTransition.cc
+  G4RDShellData.cc
   LIBRARIES PUBLIC
   Geant4::G4physicslists
   artg4tk_particles

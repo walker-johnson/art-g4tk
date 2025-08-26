@@ -25,48 +25,52 @@
 //
 //
 //
-// Hadronic Process: Very Low Energy Neutron X-Sections
-// original by H.P. Wellisch, TRIUMF, 14-Feb-97
-// Builds and has the Cross-section data for one material.
-
+ // Hadronic Process: Very Low Energy Neutron X-Sections
+ // original by H.P. Wellisch, TRIUMF, 14-Feb-97
+ // Builds and has the Cross-section data for one material.
+ 
 // Class Description
 // Final state production model for a high precision (based on evaluated data
-// libraries) description of neutron capture below 20 MeV;
+// libraries) description of neutron capture below 20 MeV; 
 // To be used in your physics list in case you need this physics.
-// In this case you want to register an object of this class with
+// In this case you want to register an object of this class with 
 // the corresponding process.
 // Class Description - End
 
 // P. Arce, June-2014 Conversion neutron_hp to particle_hp
 //
-#ifndef artg4tk_lists_ArParticleHPCapture_hh
-#define artg4tk_lists_ArParticleHPCapture_hh
+#ifndef artg4tk_lists_G4CASCADEParticleHPCapture_h
+#define artg4tk_lists_G4CASCADEParticleHPCapture_h 1
 
-#include "Geant4/G4HadronicInteraction.hh"
-#include "Geant4/G4ParticleHPChannel.hh"
 #include "Geant4/globals.hh"
+#include "Geant4/G4ParticleHPChannel.hh"
+#include "Geant4/G4HadronicInteraction.hh"
 
-class ArParticleHPCapture : public G4HadronicInteraction {
-public:
-  ArParticleHPCapture();
+class G4CASCADEParticleHPCapture : public G4HadronicInteraction
+{
+  public: 
+  
+  G4CASCADEParticleHPCapture();
 
-  ~ArParticleHPCapture();
+  ~G4CASCADEParticleHPCapture();
 
-  G4HadFinalState* ApplyYourself(const G4HadProjectile& aTrack, G4Nucleus& aTargetNucleus) override;
+  G4HadFinalState * ApplyYourself(const G4HadProjectile& aTrack, G4Nucleus& aTargetNucleus);
 
-  const std::pair<G4double, G4double> GetFatalEnergyCheckLevels() const override;
+  virtual const std::pair<G4double, G4double> GetFatalEnergyCheckLevels() const;
 
-  G4int GetVerboseLevel() const;
-  void SetVerboseLevel(G4int);
-  void BuildPhysicsTable(const G4ParticleDefinition&) override;
-  void ModelDescription(std::ostream& outFile) const override;
-
-private:
-  std::vector<G4ParticleHPChannel*>* theCapture;
+   public:
+      G4int GetVerboseLevel() const;
+      void SetVerboseLevel( G4int );
+      void BuildPhysicsTable(const G4ParticleDefinition&);
+      virtual void ModelDescription(std::ostream& outFile) const;
+  
+  private:
+  
+      std::vector<G4ParticleHPChannel*>* theCapture;
   G4String dirName;
   G4int numEle;
-
+  
   G4HadFinalState theResult;
 };
 
-#endif /* artg4tk_lists_ArParticleHPCapture_hh */
+#endif
